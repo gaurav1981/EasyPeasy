@@ -24,11 +24,11 @@ class CompoundAttributeTests: XCTestCase {
     func testThatPriorityAffectsEverySubAttributeOfCompoundAttribute() {
         // given
         // when
-        let sizeAttribute = Size(CGSize(width: 100, height: 100)).with(.LowPriority)
+        let sizeAttribute = Size(CGSize(width: 100, height: 100)).with(.low)
         
         // then
         for subAttribute in sizeAttribute.attributes {
-            XCTAssertTrue(subAttribute.priority.layoutPriority() == Priority.LowPriority.layoutPriority())
+            XCTAssertTrue(subAttribute.priority.layoutPriority() == Priority.low.layoutPriority())
         }
     }
     
@@ -39,7 +39,7 @@ class CompoundAttributeTests: XCTestCase {
         
         // then
         for subAttribute in sizeAttribute.attributes {
-            XCTAssertFalse(subAttribute.condition!())
+            XCTAssertFalse((subAttribute.condition! as! Condition)())
         }
     }
     
@@ -53,8 +53,8 @@ class CompoundAttributeTests: XCTestCase {
         // then
         for attribute in sizeAttribute.attributes {
             XCTAssertTrue(attribute.constant.value == 0.0)
-            XCTAssertTrue(attribute.constant.modifier == .EqualTo)
-            XCTAssertTrue(attribute.constant.layoutMultiplier() == 1.0)
+            XCTAssertTrue(attribute.constant.relation == .equal)
+            XCTAssertTrue(attribute.constant.multiplier == 1.0)
         }
     }
     
@@ -66,8 +66,8 @@ class CompoundAttributeTests: XCTestCase {
         // then
         for attribute in sizeAttribute.attributes {
             XCTAssertTrue(attribute.constant.value == 50)
-            XCTAssertTrue(attribute.constant.modifier == .EqualTo)
-            XCTAssertTrue(attribute.constant.layoutMultiplier() == 1.0)
+            XCTAssertTrue(attribute.constant.relation == .equal)
+            XCTAssertTrue(attribute.constant.multiplier == 1.0)
         }
     }
     
@@ -79,8 +79,8 @@ class CompoundAttributeTests: XCTestCase {
         // then
         for attribute in sizeAttribute.attributes {
             XCTAssertTrue(attribute.constant.value == 50)
-            XCTAssertTrue(attribute.constant.modifier == .GreaterThanOrEqualTo)
-            XCTAssertTrue(attribute.constant.layoutMultiplier() == 1.0)
+            XCTAssertTrue(attribute.constant.relation == .greaterThanOrEqual)
+            XCTAssertTrue(attribute.constant.multiplier == 1.0)
         }
     }
     
@@ -92,8 +92,8 @@ class CompoundAttributeTests: XCTestCase {
         // then
         for attribute in sizeAttribute.attributes {
             XCTAssertTrue(attribute.constant.value == 2.0)
-            XCTAssertTrue(attribute.constant.modifier == .MultipliedBy)
-            XCTAssertTrue(attribute.constant.layoutMultiplier() == 2.0)
+            XCTAssertTrue(attribute.constant.relation == .equal)
+            XCTAssertTrue(attribute.constant.multiplier == 2.0)
         }
     }
     
@@ -104,24 +104,24 @@ class CompoundAttributeTests: XCTestCase {
         
         // then
         XCTAssertTrue(sizeAttribute.attributes[0].constant.value == 120.0)
-        XCTAssertTrue(sizeAttribute.attributes[0].constant.modifier == .EqualTo)
-        XCTAssertTrue(sizeAttribute.attributes[0].constant.layoutMultiplier() == 1.0)
+        XCTAssertTrue(sizeAttribute.attributes[0].constant.relation == .equal)
+        XCTAssertTrue(sizeAttribute.attributes[0].constant.multiplier == 1.0)
         
         XCTAssertTrue(sizeAttribute.attributes[1].constant.value == 200.0)
-        XCTAssertTrue(sizeAttribute.attributes[1].constant.modifier == .EqualTo)
-        XCTAssertTrue(sizeAttribute.attributes[1].constant.layoutMultiplier() == 1.0)
+        XCTAssertTrue(sizeAttribute.attributes[1].constant.relation == .equal)
+        XCTAssertTrue(sizeAttribute.attributes[1].constant.multiplier == 1.0)
     }
     
     func testThatLikeMethodSetsTheReferenceViewToEachOneOfTheSubAttributes() {
         // given
-        let referenceView = UIView(frame: CGRectZero)
+        let referenceView = UIView(frame: CGRect.zero)
         
         // when
         let sizeAttribute = Size(100).like(referenceView)
         
         // then
         for attribute in sizeAttribute.attributes {
-            XCTAssertTrue(attribute.referenceView === referenceView)
+            XCTAssertTrue(attribute.referenceItem === referenceView)
         }
     }
     
@@ -135,8 +135,8 @@ class CompoundAttributeTests: XCTestCase {
         // then
         for attribute in edgesAttribute.attributes {
             XCTAssertTrue(attribute.constant.value == 0.0)
-            XCTAssertTrue(attribute.constant.modifier == .EqualTo)
-            XCTAssertTrue(attribute.constant.layoutMultiplier() == 1.0)
+            XCTAssertTrue(attribute.constant.relation == .equal)
+            XCTAssertTrue(attribute.constant.multiplier == 1.0)
         }
     }
     
@@ -148,8 +148,8 @@ class CompoundAttributeTests: XCTestCase {
         // then
         for attribute in edgesAttribute.attributes {
             XCTAssertTrue(attribute.constant.value == 50)
-            XCTAssertTrue(attribute.constant.modifier == .EqualTo)
-            XCTAssertTrue(attribute.constant.layoutMultiplier() == 1.0)
+            XCTAssertTrue(attribute.constant.relation == .equal)
+            XCTAssertTrue(attribute.constant.multiplier == 1.0)
         }
     }
     
@@ -161,8 +161,8 @@ class CompoundAttributeTests: XCTestCase {
         // then
         for attribute in edgesAttribute.attributes {
             XCTAssertTrue(attribute.constant.value == 50)
-            XCTAssertTrue(attribute.constant.modifier == .GreaterThanOrEqualTo)
-            XCTAssertTrue(attribute.constant.layoutMultiplier() == 1.0)
+            XCTAssertTrue(attribute.constant.relation == .greaterThanOrEqual)
+            XCTAssertTrue(attribute.constant.multiplier == 1.0)
         }
     }
     
@@ -174,8 +174,8 @@ class CompoundAttributeTests: XCTestCase {
         // then
         for attribute in edgesAttribute.attributes {
             XCTAssertTrue(attribute.constant.value == 2.0)
-            XCTAssertTrue(attribute.constant.modifier == .MultipliedBy)
-            XCTAssertTrue(attribute.constant.layoutMultiplier() == 2.0)
+            XCTAssertTrue(attribute.constant.relation == .equal)
+            XCTAssertTrue(attribute.constant.multiplier == 2.0)
         }
     }
     
@@ -186,20 +186,20 @@ class CompoundAttributeTests: XCTestCase {
         
         // then
         XCTAssertTrue(edgesAttribute.attributes[0].constant.value == 100.0)
-        XCTAssertTrue(edgesAttribute.attributes[0].constant.modifier == .EqualTo)
-        XCTAssertTrue(edgesAttribute.attributes[0].constant.layoutMultiplier() == 1.0)
+        XCTAssertTrue(edgesAttribute.attributes[0].constant.relation == .equal)
+        XCTAssertTrue(edgesAttribute.attributes[0].constant.multiplier == 1.0)
         
         XCTAssertTrue(edgesAttribute.attributes[1].constant.value == 20.0)
-        XCTAssertTrue(edgesAttribute.attributes[1].constant.modifier == .EqualTo)
-        XCTAssertTrue(edgesAttribute.attributes[1].constant.layoutMultiplier() == 1.0)
+        XCTAssertTrue(edgesAttribute.attributes[1].constant.relation == .equal)
+        XCTAssertTrue(edgesAttribute.attributes[1].constant.multiplier == 1.0)
         
         XCTAssertTrue(edgesAttribute.attributes[2].constant.value == 10.0)
-        XCTAssertTrue(edgesAttribute.attributes[2].constant.modifier == .EqualTo)
-        XCTAssertTrue(edgesAttribute.attributes[2].constant.layoutMultiplier() == 1.0)
+        XCTAssertTrue(edgesAttribute.attributes[2].constant.relation == .equal)
+        XCTAssertTrue(edgesAttribute.attributes[2].constant.multiplier == 1.0)
         
         XCTAssertTrue(edgesAttribute.attributes[3].constant.value == 50.0)
-        XCTAssertTrue(edgesAttribute.attributes[3].constant.modifier == .EqualTo)
-        XCTAssertTrue(edgesAttribute.attributes[3].constant.layoutMultiplier() == 1.0)
+        XCTAssertTrue(edgesAttribute.attributes[3].constant.relation == .equal)
+        XCTAssertTrue(edgesAttribute.attributes[3].constant.multiplier == 1.0)
     }
     
     func testThatCenterAttributeInitWithNoParamsSetsTheExpectedConstants() {
@@ -210,8 +210,8 @@ class CompoundAttributeTests: XCTestCase {
         // then
         for attribute in centerAttribute.attributes {
             XCTAssertTrue(attribute.constant.value == 0.0)
-            XCTAssertTrue(attribute.constant.modifier == .EqualTo)
-            XCTAssertTrue(attribute.constant.layoutMultiplier() == 1.0)
+            XCTAssertTrue(attribute.constant.relation == .equal)
+            XCTAssertTrue(attribute.constant.multiplier == 1.0)
         }
     }
     
@@ -223,8 +223,8 @@ class CompoundAttributeTests: XCTestCase {
         // then
         for attribute in centerAttribute.attributes {
             XCTAssertTrue(attribute.constant.value == 50)
-            XCTAssertTrue(attribute.constant.modifier == .EqualTo)
-            XCTAssertTrue(attribute.constant.layoutMultiplier() == 1.0)
+            XCTAssertTrue(attribute.constant.relation == .equal)
+            XCTAssertTrue(attribute.constant.multiplier == 1.0)
         }
     }
     
@@ -236,8 +236,8 @@ class CompoundAttributeTests: XCTestCase {
         // then
         for attribute in centerAttribute.attributes {
             XCTAssertTrue(attribute.constant.value == 50)
-            XCTAssertTrue(attribute.constant.modifier == .GreaterThanOrEqualTo)
-            XCTAssertTrue(attribute.constant.layoutMultiplier() == 1.0)
+            XCTAssertTrue(attribute.constant.relation == .greaterThanOrEqual)
+            XCTAssertTrue(attribute.constant.multiplier == 1.0)
         }
     }
     
@@ -249,8 +249,8 @@ class CompoundAttributeTests: XCTestCase {
         // then
         for attribute in centerAttribute.attributes {
             XCTAssertTrue(attribute.constant.value == 2.0)
-            XCTAssertTrue(attribute.constant.modifier == .MultipliedBy)
-            XCTAssertTrue(attribute.constant.layoutMultiplier() == 2.0)
+            XCTAssertTrue(attribute.constant.relation == .equal)
+            XCTAssertTrue(attribute.constant.multiplier == 2.0)
         }
     }
     
@@ -261,12 +261,12 @@ class CompoundAttributeTests: XCTestCase {
         
         // then
         XCTAssertTrue(centerAttribute.attributes[0].constant.value == 210.0)
-        XCTAssertTrue(centerAttribute.attributes[0].constant.modifier == .EqualTo)
-        XCTAssertTrue(centerAttribute.attributes[0].constant.layoutMultiplier() == 1.0)
+        XCTAssertTrue(centerAttribute.attributes[0].constant.relation == .equal)
+        XCTAssertTrue(centerAttribute.attributes[0].constant.multiplier == 1.0)
         
         XCTAssertTrue(centerAttribute.attributes[1].constant.value == 430.0)
-        XCTAssertTrue(centerAttribute.attributes[1].constant.modifier == .EqualTo)
-        XCTAssertTrue(centerAttribute.attributes[1].constant.layoutMultiplier() == 1.0)
+        XCTAssertTrue(centerAttribute.attributes[1].constant.relation == .equal)
+        XCTAssertTrue(centerAttribute.attributes[1].constant.multiplier == 1.0)
     }
     
     func testThatCenterWithinMarginsAttributeInitWithNoParamsSetsTheExpectedConstants() {
@@ -277,8 +277,8 @@ class CompoundAttributeTests: XCTestCase {
         // then
         for attribute in centerWithinMarginsAttribute.attributes {
             XCTAssertTrue(attribute.constant.value == 0.0)
-            XCTAssertTrue(attribute.constant.modifier == .EqualTo)
-            XCTAssertTrue(attribute.constant.layoutMultiplier() == 1.0)
+            XCTAssertTrue(attribute.constant.relation == .equal)
+            XCTAssertTrue(attribute.constant.multiplier == 1.0)
         }
     }
     
@@ -290,8 +290,8 @@ class CompoundAttributeTests: XCTestCase {
         // then
         for attribute in centerWithinMarginsAttribute.attributes {
             XCTAssertTrue(attribute.constant.value == 50)
-            XCTAssertTrue(attribute.constant.modifier == .EqualTo)
-            XCTAssertTrue(attribute.constant.layoutMultiplier() == 1.0)
+            XCTAssertTrue(attribute.constant.relation == .equal)
+            XCTAssertTrue(attribute.constant.multiplier == 1.0)
         }
     }
     
@@ -303,8 +303,8 @@ class CompoundAttributeTests: XCTestCase {
         // then
         for attribute in centerWithinMarginsAttribute.attributes {
             XCTAssertTrue(attribute.constant.value == 50)
-            XCTAssertTrue(attribute.constant.modifier == .GreaterThanOrEqualTo)
-            XCTAssertTrue(attribute.constant.layoutMultiplier() == 1.0)
+            XCTAssertTrue(attribute.constant.relation == .greaterThanOrEqual)
+            XCTAssertTrue(attribute.constant.multiplier == 1.0)
         }
     }
     
@@ -316,8 +316,8 @@ class CompoundAttributeTests: XCTestCase {
         // then
         for attribute in centerWithinMarginsAttribute.attributes {
             XCTAssertTrue(attribute.constant.value == 2.0)
-            XCTAssertTrue(attribute.constant.modifier == .MultipliedBy)
-            XCTAssertTrue(attribute.constant.layoutMultiplier() == 2.0)
+            XCTAssertTrue(attribute.constant.relation == .equal)
+            XCTAssertTrue(attribute.constant.multiplier == 2.0)
         }
     }
     
@@ -328,12 +328,12 @@ class CompoundAttributeTests: XCTestCase {
         
         // then
         XCTAssertTrue(centerWithinMarginsAttribute.attributes[0].constant.value == 210.0)
-        XCTAssertTrue(centerWithinMarginsAttribute.attributes[0].constant.modifier == .EqualTo)
-        XCTAssertTrue(centerWithinMarginsAttribute.attributes[0].constant.layoutMultiplier() == 1.0)
+        XCTAssertTrue(centerWithinMarginsAttribute.attributes[0].constant.relation == .equal)
+        XCTAssertTrue(centerWithinMarginsAttribute.attributes[0].constant.multiplier == 1.0)
         
         XCTAssertTrue(centerWithinMarginsAttribute.attributes[1].constant.value == 430.0)
-        XCTAssertTrue(centerWithinMarginsAttribute.attributes[1].constant.modifier == .EqualTo)
-        XCTAssertTrue(centerWithinMarginsAttribute.attributes[1].constant.layoutMultiplier() == 1.0)
+        XCTAssertTrue(centerWithinMarginsAttribute.attributes[1].constant.relation == .equal)
+        XCTAssertTrue(centerWithinMarginsAttribute.attributes[1].constant.multiplier == 1.0)
     }
     
     func testThatMaringsAttributeInitWithNoParamsSetsTheExpectedConstants() {
@@ -344,8 +344,8 @@ class CompoundAttributeTests: XCTestCase {
         // then
         for attribute in marginsAttribute.attributes {
             XCTAssertTrue(attribute.constant.value == 0.0)
-            XCTAssertTrue(attribute.constant.modifier == .EqualTo)
-            XCTAssertTrue(attribute.constant.layoutMultiplier() == 1.0)
+            XCTAssertTrue(attribute.constant.relation == .equal)
+            XCTAssertTrue(attribute.constant.multiplier == 1.0)
         }
     }
     
@@ -357,8 +357,8 @@ class CompoundAttributeTests: XCTestCase {
         // then
         for attribute in marginsAttribute.attributes {
             XCTAssertTrue(attribute.constant.value == 50)
-            XCTAssertTrue(attribute.constant.modifier == .EqualTo)
-            XCTAssertTrue(attribute.constant.layoutMultiplier() == 1.0)
+            XCTAssertTrue(attribute.constant.relation == .equal)
+            XCTAssertTrue(attribute.constant.multiplier == 1.0)
         }
     }
     
@@ -370,8 +370,8 @@ class CompoundAttributeTests: XCTestCase {
         // then
         for attribute in marginsAttribute.attributes {
             XCTAssertTrue(attribute.constant.value == 50)
-            XCTAssertTrue(attribute.constant.modifier == .GreaterThanOrEqualTo)
-            XCTAssertTrue(attribute.constant.layoutMultiplier() == 1.0)
+            XCTAssertTrue(attribute.constant.relation == .greaterThanOrEqual)
+            XCTAssertTrue(attribute.constant.multiplier == 1.0)
         }
     }
     
@@ -383,8 +383,8 @@ class CompoundAttributeTests: XCTestCase {
         // then
         for attribute in marginsAttribute.attributes {
             XCTAssertTrue(attribute.constant.value == 2.0)
-            XCTAssertTrue(attribute.constant.modifier == .MultipliedBy)
-            XCTAssertTrue(attribute.constant.layoutMultiplier() == 2.0)
+            XCTAssertTrue(attribute.constant.relation == .equal)
+            XCTAssertTrue(attribute.constant.multiplier == 2.0)
         }
     }
     
@@ -395,20 +395,115 @@ class CompoundAttributeTests: XCTestCase {
         
         // then
         XCTAssertTrue(marginsAttribute.attributes[0].constant.value == 100.0)
-        XCTAssertTrue(marginsAttribute.attributes[0].constant.modifier == .EqualTo)
-        XCTAssertTrue(marginsAttribute.attributes[0].constant.layoutMultiplier() == 1.0)
+        XCTAssertTrue(marginsAttribute.attributes[0].constant.relation == .equal)
+        XCTAssertTrue(marginsAttribute.attributes[0].constant.multiplier == 1.0)
         
         XCTAssertTrue(marginsAttribute.attributes[1].constant.value == 20.0)
-        XCTAssertTrue(marginsAttribute.attributes[1].constant.modifier == .EqualTo)
-        XCTAssertTrue(marginsAttribute.attributes[1].constant.layoutMultiplier() == 1.0)
+        XCTAssertTrue(marginsAttribute.attributes[1].constant.relation == .equal)
+        XCTAssertTrue(marginsAttribute.attributes[1].constant.multiplier == 1.0)
         
         XCTAssertTrue(marginsAttribute.attributes[2].constant.value == 10.0)
-        XCTAssertTrue(marginsAttribute.attributes[2].constant.modifier == .EqualTo)
-        XCTAssertTrue(marginsAttribute.attributes[2].constant.layoutMultiplier() == 1.0)
+        XCTAssertTrue(marginsAttribute.attributes[2].constant.relation == .equal)
+        XCTAssertTrue(marginsAttribute.attributes[2].constant.multiplier == 1.0)
         
         XCTAssertTrue(marginsAttribute.attributes[3].constant.value == 50.0)
-        XCTAssertTrue(marginsAttribute.attributes[3].constant.modifier == .EqualTo)
-        XCTAssertTrue(marginsAttribute.attributes[3].constant.layoutMultiplier() == 1.0)
+        XCTAssertTrue(marginsAttribute.attributes[3].constant.relation == .equal)
+        XCTAssertTrue(marginsAttribute.attributes[3].constant.multiplier == 1.0)
+    }
+    
+    func testThatCreateAtrributeIsWidthByDefault() {
+        // given
+        let attribute = Size()
+        
+        // when
+        // then
+        XCTAssertTrue(attribute.createAttribute == .width)
+    }
+    
+    // MARK: Contextual conditions
+    
+    func testThatAttributesWithFalseContextualConditionIsNotInstalled() {
+        // given
+        let superview = UIView(frame: CGRect(x: 0, y: 0, width: 400, height: 1000))
+        let viewA = UIView(frame: CGRect.zero)
+        superview.addSubview(viewA)
+        
+        // when
+        if UI_USER_INTERFACE_IDIOM() == .pad {
+            viewA.easy.layout(Size(120).when { $0.isPhone })
+        }
+        else {
+            viewA.easy.layout(Size(120).when { false })
+        }
+        
+        // then
+        XCTAssertTrue(viewA.constraints.count == 0)
+        XCTAssertTrue(viewA.test_attributes.count == 2)
+    }
+    
+    func testThatAttributesWithTrueContextualConditionIsInstalled() {
+        // given
+        let superview = UIView(frame: CGRect(x: 0, y: 0, width: 400, height: 1000))
+        let viewA = UIView(frame: CGRect.zero)
+        superview.addSubview(viewA)
+        
+        // when
+        if UI_USER_INTERFACE_IDIOM() == .pad {
+            viewA.easy.layout(Size(120).when { $0.isPad })
+        }
+        else {
+            viewA.easy.layout(Size(120).when { $0.isPhone })
+        }
+        
+        // then
+        XCTAssertTrue(viewA.constraints.count == 2)
+        XCTAssertTrue(viewA.test_attributes.count == 2)
+    }
+    
+    func testThatArrayOfAttributesWithFalseContextualConditionIsNotInstalled() {
+        // given
+        let superview = UIView(frame: CGRect(x: 0, y: 0, width: 400, height: 1000))
+        let viewA = UIView(frame: CGRect.zero)
+        superview.addSubview(viewA)
+        
+        // when
+        if UI_USER_INTERFACE_IDIOM() == .pad {
+            viewA.easy.layout([
+                Size(120)
+            ].when { $0.isPhone })
+        }
+        else {
+            viewA.easy.layout([
+                Size(120)
+            ].when { false })
+        }
+        
+        // then
+        XCTAssertTrue(viewA.constraints.count == 0)
+        XCTAssertTrue(viewA.test_attributes.count == 2)
+    }
+    
+    func testThatArrayOfAttributesWithTrueContextualConditionIsInstalled() {
+        // given
+        let superview = UIView(frame: CGRect(x: 0, y: 0, width: 400, height: 1000))
+        let viewA = UIView(frame: CGRect.zero)
+        superview.addSubview(viewA)
+        
+        // when
+        if UI_USER_INTERFACE_IDIOM() == .pad {
+            viewA.easy.layout([
+                Size(120)
+            ].when { $0.isPad })
+        }
+        else {
+            viewA.easy.layout([
+                Size(120)
+            ].when { $0.isPhone })
+        }
+        
+        // then
+        XCTAssertTrue(viewA.constraints.count == 2)
+        XCTAssertTrue(viewA.test_attributes.count == 2)
     }
 
 }

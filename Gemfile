@@ -4,7 +4,5 @@ source 'https://rubygems.org'
 gem 'cocoapods'
 
 # Coverage reports
-gem 'xcov'
+gem 'danger-xcov'
 
-# CI
-gem 'fastlane'

@@ -23,9 +23,34 @@ class PriorityTests: XCTestCase {
     
     func testThatThatOrderIsCorrect() {
         // given
-        let high = Priority.HighPriority
-        let medium = Priority.MediumPriority
-        let low = Priority.LowPriority
+        let required = Priority.required
+        let high = Priority.high
+        let medium = Priority.medium
+        let low = Priority.low
+        
+        // when
+        // then
+        XCTAssertTrue(required.layoutPriority() > high.layoutPriority())
+        XCTAssertTrue(high.layoutPriority() > medium.layoutPriority())
+        XCTAssertTrue(medium.layoutPriority() > low.layoutPriority())
+    }
+    
+    func testThatCustomPriorityRetursTheValueGiven() {
+        // given
+        let myCustomValue: Float = 234.0
+        
+        // when
+        let priority = Priority.custom(myCustomValue)
+        
+        // then
+        XCTAssertTrue(priority.layoutPriority() == myCustomValue)
+    }
+    
+    func testThatThatOrderIsCorrect_deprecatedCases() {
+        // given
+        let high = Priority.high
+        let medium = Priority.medium
+        let low = Priority.low
         
         // when
         // then
@@ -33,12 +58,12 @@ class PriorityTests: XCTestCase {
         XCTAssertTrue(medium.layoutPriority() > low.layoutPriority())
     }
 
-    func testThatCustomPriorityRetursTheValueGiven() {
+    func testThatCustomPriorityRetursTheValueGiven_deprecatedCases() {
         // given
         let myCustomValue: Float = 234.0
         
         // when
-        let priority = Priority.CustomPriority(myCustomValue)
+        let priority = Priority.custom(myCustomValue)
         
         // then
         XCTAssertTrue(priority.layoutPriority() == myCustomValue)

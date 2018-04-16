@@ -8,16 +8,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Foundation
+#if os(iOS) || os(tvOS)
+import UIKit
+#else
+import AppKit
+#endif
 
 /**
     `Attribute` that leads on the application of multiple
     `Attribute` objects
  */
-public class CompoundAttribute: Attribute {
+open class CompoundAttribute: Attribute {
     
     /// Array of attributes that shape the `CompoundAttribute`
-    public internal(set) var attributes: [Attribute] = []
+    open internal(set) var attributes: [Attribute] = []
     
     // MARK: Public methods
     
@@ -27,7 +31,7 @@ public class CompoundAttribute: Attribute {
          priority of the constraint
          - returns: the `Attribute` instance
      */
-    public override func with(priority: Priority) -> Self {
+    @discardableResult open override func with(_ priority: Priority) -> Self {
         super.with(priority)
         for attribute in self.attributes {
             attribute.with(priority)
@@ -42,7 +46,7 @@ public class CompoundAttribute: Attribute {
          installing a constraint
          - returns: the `Attribute` instance
      */
-    public override func when(closure: Condition?) -> Self {
+    @discardableResult open override func when(_ closure: Condition?) -> Self {
         super.when(closure)
         for attribute in self.attributes {
             attribute.when(closure)
@@ -50,32 +54,21 @@ public class CompoundAttribute: Attribute {
         return self
     }
     
-    // MARK: Internal methods
-    
+    #if os(iOS)
     /**
-        This method evaluates whether an `Attribute` should be
-        applied, resolves any conflicts with the `Attributes`
-        already applied and it also generates the `NSLayoutConstraint`
-        added to `view` for each one of the `Attribute` objects
-        shaping the `CompoundAttribute`
-        - parameter view: `UIView` in which the generated
-        `NSLayoutConstraint` will be added
-        - returns an `Array` of `NSLayoutConstraint` objects that will
-        be installed on the `UIView` passed as parameter
+        Sets the `when` closure of the `Attribute` and each one
+        of the `Attribute` objects shaping the `CompoundAttribute`
+        - parameter closure: `Closure` to be called before installing a
+        constraint
+        - returns: the `Attribute` instance
      */
-    override func createConstraintForView(view: UIView) -> [NSLayoutConstraint] {
-        // Reference to the target view
-        self.createView = view
-        
-        // Create the constraints that will be installed in
-        // the `UIView` given composing the `CompoundAttribute`
-        var constraints: [NSLayoutConstraint] = []
+    @discardableResult open override func when(_ closure: ContextualCondition?) -> Self {
+        super.when(closure)
         for attribute in self.attributes {
-            let newConstraints = attribute.createConstraintForView(view)
-            constraints.appendContentsOf(newConstraints)
+            attribute.when(closure)
         }
-        
-        return constraints
+        return self
     }
+    #endif
     
 }
